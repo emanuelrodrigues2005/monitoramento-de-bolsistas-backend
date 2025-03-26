@@ -1,11 +1,11 @@
 # Monitoramento-de-Bolsistas
 Projeto de Monitoramento de bolsistas em um projeto de extensão acadêmico
 
-### *Objetivo*
+### *1. Objetivo*
 
 Uma plataforma web para universidades e instituições acompanharem o desempenho de bolsistas e o progresso de projetos acadêmicos, garantindo uma gestão eficiente e transparente.
 
-### *Funcionalidades Essenciais (MVP)*
+### *2. Funcionalidades Essenciais (MVP)*
 
 ✅ **Cadastro e Gestão de Bolsistas e Projetos**
 
@@ -44,7 +44,7 @@ Uma plataforma web para universidades e instituições acompanharem o desempenho
 
 ---
 
-### *Tecnologias*
+### *3. Tecnologias*
 
 📌 **Frontend:** React + Next.js + Tailwind
 
