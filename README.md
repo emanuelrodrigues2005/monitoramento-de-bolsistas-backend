@@ -5,6 +5,8 @@ Projeto de Monitoramento de bolsistas em um projeto de extensão acadêmico
 
 Uma plataforma web para universidades e instituições acompanharem o desempenho de bolsistas e o progresso de projetos acadêmicos, garantindo uma gestão eficiente e transparente.
 
+---
+
 ### *2. Funcionalidades Essenciais (MVP)*
 
 ✅ **Cadastro e Gestão de Bolsistas e Projetos**
