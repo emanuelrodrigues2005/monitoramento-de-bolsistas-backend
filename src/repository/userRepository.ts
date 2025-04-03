@@ -3,17 +3,17 @@ import UserModel, { UserModelInterface } from "../models/userModel";
 
 class UserRepository {
     private client: PrismaClient
-    private static instace: UserRepository;
+    private static instance: UserRepository;
 
     private constructor() {
         this.client = new PrismaClient();
     }
 
     public static getInstance(): UserRepository {
-        if (!UserRepository.instace) {
-            UserRepository.instace = new UserRepository();
+        if (!UserRepository.instance) {
+            UserRepository.instance = new UserRepository();
         }
-        return UserRepository.instace;
+        return UserRepository.instance;
     }
 
     async getAllUsers(): Promise<UserModelInterface[]> {
