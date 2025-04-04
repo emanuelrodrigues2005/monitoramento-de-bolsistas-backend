@@ -1,6 +1,4 @@
 node_modules
-studentModel.ts
-studentRepository.ts
 
 # Keep environment variables out of version control
 .env
