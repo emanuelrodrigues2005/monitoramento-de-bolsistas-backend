@@ -9,8 +9,7 @@ const studentRoute = new AppRoute("student");
 
 studentRoute.routes.post("/", async (req, res) => {
     try {
-        const { name, cpf, email, password, phone, studentRegistration } = req.body;
-
+        const { name, cpf, email, password, phone, studentRegistration, bankName, bankAccount, bankAgency, researchGrant } = req.body;
         const createStudent = CreateStudent.getInstance();
         const student = await createStudent.execute({
             student: { cpf, name, email, password, phone, studentRegistration },
