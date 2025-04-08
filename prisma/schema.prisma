@@ -18,3 +18,25 @@ model User {
   phone     String @unique
   password  String 
 }
+
+model Student {
+  cpf                 String   @id @unique
+  name                String
+  email               String   @unique
+  phone               String   @unique
+  password            String
+  studentRegistration String
+  bankName            String
+  bankAccount         String
+  bankAgency          String
+  researchGrant       String
+}
+
+model Advisor {
+  cpf                 String   @id @unique
+  name                String
+  email               String   @unique
+  phone               String   @unique
+  password            String
+  advisorRegistration String   @unique
+}

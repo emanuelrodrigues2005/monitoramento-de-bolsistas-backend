@@ -1,11 +1,9 @@
-import StudentModel, {StudentModelInterface} from "../../models/studentModel";
+import StudentModel, { StudentModelInterface } from "../../models/studentModel";
 import StudentRepository from "../../repository/studentRepository";
-import {Service, ServiceInput, ServiceOutput} from "../service";
+import { Service, ServiceInput, ServiceOutput } from "../service";
 
 interface UpdateStudentInput extends ServiceInput {
-    studentCPF: string;
-    studentData: Partial<StudentModelInterface>;
-
+    student: StudentModelInterface;
 }
 
 interface UpdateStudentOutput extends ServiceOutput {
@@ -27,29 +25,21 @@ export class UpdateStudent implements Service {
         return UpdateStudent.instance;
     }
 
-    public async execute({ studentCPF, studentData }: UpdateStudentInput): Promise<UpdateStudentOutput> {
-        const studentFromDB = await this.repository.getStudentByCPF(studentCPF);
+    public async execute({ student }: UpdateStudentInput): Promise<UpdateStudentOutput> {
+        const studentObject = new StudentModel(
+            student.cpf,
+            student.name,
+            student.email,
+            student.password,
+            student.phone,
+            student.studentRegistration,
+            student.bankName,
+            student.bankAccount,
+            student.bankAgency,
+            student.researchGrant
+        );
 
-        if (!studentFromDB) {
-            return {
-                student: null,
-            };
-        }
-
-        const studentToUpdate = new StudentModel(
-            studentData.name || studentFromDB.name,
-            studentData.email || studentFromDB.email,
-            studentData.password || studentFromDB.password,
-            studentData.phone || studentFromDB.phone,
-            studentData.cpf || studentFromDB.cpf,
-            studentData.studentRegistration || studentFromDB.studentRegistration,
-            studentData.bankName || studentFromDB.bankName,
-            studentData.bankAccount || studentFromDB.bankAccount,
-            studentData.bankAgency || studentFromDB.bankAgency,
-            studentData.researchGrant || studentFromDB.researchGrant,
-        ); 
-
-        const updatedStudent = await this.repository.updateStudent(studentToUpdate);
+        const updatedStudent = await this.repository.updateStudent(studentObject);
 
         return {
             student: updatedStudent,

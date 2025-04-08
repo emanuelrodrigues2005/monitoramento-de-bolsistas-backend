@@ -3,8 +3,7 @@ import AdvisorRepository from "../../repository/advisorRepository";
 import { Service, ServiceInput, ServiceOutput } from "../service";
 
 interface UpdateAdvisorInput extends ServiceInput {
-    advisorCPF: string;
-    advisorData: Partial<AdvisorModelInterface>;
+    advisor: AdvisorModelInterface;
 }
 
 interface UpdateAdvisorOutput extends ServiceOutput {
@@ -26,28 +25,18 @@ export class UpdateAdvisor implements Service {
         return UpdateAdvisor.instance;
     }
 
-    public async execute({ advisorCPF, advisorData }: UpdateAdvisorInput): Promise<UpdateAdvisorOutput> {
-        const advisorFromDB = await this.repository.getAdvisorByCPF(advisorCPF);
-
-        if (!advisorFromDB) {
-            return {
-                advisor: null,
-            };
-        }
-
-        const advisorToUpdate = new AdvisorModel(
-            advisorFromDB.cpf,
-            advisorData.name || advisorFromDB.name,
-            advisorData.email || advisorFromDB.email,
-            advisorData.password || advisorFromDB.password,
-            advisorData.phone || advisorFromDB.phone,
-            advisorData.advisorRegistration || advisorFromDB.advisorRegistration
+    public async execute({ advisor }: UpdateAdvisorInput): Promise<UpdateAdvisorOutput> {
+        const newAdvisorObject = new AdvisorModel (
+            advisor.cpf,
+            advisor.name,
+            advisor.email,
+            advisor.password,
+            advisor.phone,
+            advisor.advisorRegistration
         );
-    
-        const updatedAdvisor = await this.repository.updateAdvisor(advisorToUpdate);
 
-        return {
-            advisor: updatedAdvisor,
-        };
+        
+        const updatedAdvisor = await this.repository.updateAdvisor(newAdvisorObject);
+        return { advisor: updatedAdvisor };
     }
 }

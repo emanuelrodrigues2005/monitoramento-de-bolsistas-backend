@@ -10,7 +10,7 @@ class StudentModel {
     private bankAgency: string;
     private researchGrant: string;
 
-    constructor(cpf: string, name: string, email: string, password: string, phone: string, studentRegistration: string, bankName: string ,bankAccount: string, bankAgency: string, researchGrant: string) {
+    constructor(cpf: string, name: string, email: string, password: string, phone: string, studentRegistration: string, bankName: string, bankAccount: string, bankAgency: string, researchGrant: string) {
         if (!cpf || cpf.trim() === "") {
             throw new Error(StudentErrors.INVALID_CPF);
         }
@@ -26,41 +26,43 @@ class StudentModel {
         this.researchGrant = researchGrant;
     }
 
-    getStudentCpf(): string {
+    public getCpf(): string {
         return this.cpf;
     }
 
-    getStudentName(): string {
+    public getName(): string {
         return this.name;
     }
 
-    getStudentEmail(): string {
+    public getEmail(): string {
         return this.email;
     }
 
-    getStudentPassword(): string {
+    public getPassword(): string {
         return this.password;
     }
 
-    getStudentPhone(): string {
+    public getPhone(): string {
         return this.phone;
     }
 
-    getStudentRegistration(): string {
+    public getStudentRegistration(): string {
         return this.studentRegistration;
     }
 
-    getStudentBankName(): string {
+    public getBankName(): string {
         return this.bankName;
     }
 
-    getStudentBankAccount(): string {
+    public getBankAccount(): string {
         return this.bankAccount;
     }
-    getStudentBankAgency(): string {
+
+    public getBankAgency(): string {
         return this.bankAgency;
     }
-    getStudentResearchGrant(): string {
+
+    public getResearchGrant(): string {
         return this.researchGrant;
     }
 }

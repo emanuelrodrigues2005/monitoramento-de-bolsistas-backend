@@ -1,15 +1,16 @@
-import { CreateStudent } from "../services/student/creatStudent";
+import { CreateStudent } from "../services/student/createStudent";
 import { UpdateStudent } from "../services/student/updateStudent";
 import { GetStudentByCPF } from "../services/student/getStudentByCPF";
 import { GetAllStudent } from "../services/student/getAllStudent";
-import { AppRoute } from "./AppRoute";
 import { DeleteStudent } from "../services/student/deleteStudent";
+import { AppRoute } from "./AppRoute";
 
 const studentRoute = new AppRoute("student");
 
 studentRoute.routes.post("/", async (req, res) => {
     try {
         const { cpf, name, email, password, phone, studentRegistration, bankName, bankAccount, bankAgency, researchGrant } = req.body;
+
         const createStudent = CreateStudent.getInstance();
         const student = await createStudent.execute({
             student: { cpf, name, email, password, phone, studentRegistration, bankName, bankAccount, bankAgency, researchGrant },
@@ -24,13 +25,16 @@ studentRoute.routes.post("/", async (req, res) => {
 studentRoute.routes.put("/:cpf", async (req, res) => {
     try {
         const studentCPF = req.params.cpf;
-        const studentData = req.body;
+        const { name, email, password, phone, studentRegistration, bankName, bankAccount, bankAgency, researchGrant } = req.body;
 
         const updateStudent = UpdateStudent.getInstance();
-        const result = await updateStudent.execute({ studentCPF, studentData });
+        const result = await updateStudent.execute({
+            student: { cpf: studentCPF, name, email, password, phone, studentRegistration, bankName, bankAccount, bankAgency, researchGrant },
+        });
 
         if (!result.student) {
             res.status(404).send("Aluno não encontrado.");
+            return;
         }
 
         res.status(200).send(result.student);
@@ -48,6 +52,7 @@ studentRoute.routes.get("/:cpf", async (req, res) => {
 
         if (!result.student) {
             res.status(404).send("Aluno não encontrado.");
+            return;
         }
 
         res.status(200).send(result.student);
@@ -74,11 +79,7 @@ studentRoute.routes.delete("/:cpf", async (req, res) => {
         const deleteStudent = DeleteStudent.getInstance();
         const result = await deleteStudent.execute({ studentCPF });
 
-        if (!result.student) {
-            res.status(404).send("Aluno não encontrado.");
-        }
-
-        res.status(200).send(result.student);
+        res.status(200).send(result);
     } catch (error: any) {
         res.status(400).send("Erro ao deletar aluno: " + error.message);
     }

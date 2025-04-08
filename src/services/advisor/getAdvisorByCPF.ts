@@ -7,7 +7,7 @@ interface GetAdvisorByCPFInput extends ServiceInput {
 }
 
 interface GetAdvisorByCPFOutput extends ServiceOutput {
-    advisor: AdvisorModelInterface| null;
+    advisor: AdvisorModelInterface | null;
 }
 
 export class GetAdvisorByCPF implements Service {
@@ -27,24 +27,6 @@ export class GetAdvisorByCPF implements Service {
 
     public async execute({ advisorCPF }: GetAdvisorByCPFInput): Promise<GetAdvisorByCPFOutput> {
         const advisorFromDB = await this.repository.getAdvisorByCPF(advisorCPF);
-
-        if (!advisorFromDB) {
-            return {
-                advisor: null
-            };
-        }
-
-        const advisorObject = {
-            cpf: advisorFromDB.cpf,
-            name: advisorFromDB.name,
-            email: advisorFromDB.email,
-            password: advisorFromDB.password,
-            phone: advisorFromDB.phone,
-            advisorRegistration: advisorFromDB.advisorRegistration,
-        }
-
-        return {
-            advisor: advisorObject,
-        };
+        return { advisor: advisorFromDB };
     }
 }

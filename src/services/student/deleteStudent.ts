@@ -7,7 +7,7 @@ interface DeleteStudentInput extends ServiceInput {
 }
 
 interface DeleteStudentOutput extends ServiceOutput {
-    student: StudentModelInterface;
+    message: string;
 }
 
 export class DeleteStudent implements Service {
@@ -26,12 +26,7 @@ export class DeleteStudent implements Service {
     }
 
     async execute({ studentCPF }: DeleteStudentInput): Promise<DeleteStudentOutput> {
-        const studentObject = await this.repository.getStudentByCPF(studentCPF);
-
         const deletedStudent = await this.repository.deleteStudent(studentCPF);
-
-        return {
-            student: deletedStudent,
-        };
+        return {message: "Estudante deletado com sucesso"};
     }
 }

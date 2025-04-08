@@ -25,17 +25,6 @@ export class GetAllAdvisors implements Service {
 
     public async execute(): Promise<GetAllAdvisorsOutput> {
         const advisors = await this.repository.getAllAdvisors();
-        const advisorObjects = advisors.map((advisor) => ({
-            cpf: advisor.cpf,
-            name: advisor.name,
-            email: advisor.email,
-            password: advisor.password,
-            phone: advisor.phone,
-            advisorRegistration: advisor.advisorRegistration,
-        }));
-
-        return {
-            advisors: advisorObjects,
-        };
+        return { advisors };
     }
 }

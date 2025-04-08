@@ -7,7 +7,7 @@ interface DeleteAdvisorInput extends ServiceInput {
 }
 
 interface DeleteAdvisorOutput extends ServiceOutput {
-    advisor: AdvisorModelInterface;
+    message: string;
 }
 
 export class DeleteAdvisor implements Service {
@@ -26,12 +26,10 @@ export class DeleteAdvisor implements Service {
     }
 
     async execute({ advisorCPF }: DeleteAdvisorInput): Promise<DeleteAdvisorOutput> {
-        const advisorObject = await this.repository.getAdvisorByCPF(advisorCPF);
-
         const deletedAdvisor = await this.repository.deleteAdvisor(advisorCPF);
 
         return {
-            advisor: deletedAdvisor,
+            message: "Orientador deletado com sucesso",
         };
     }
 }

@@ -26,12 +26,16 @@ export class CreateAdvisor implements Service {
     }
 
     public async execute({ advisor }: CreateAdvisorInput): Promise<CreateAdvisorOutput> {
-        const advisorObject = new AdvisorModel(advisor.cpf, advisor.name, advisor.email, advisor.password, advisor.phone, advisor.advisorRegistration);
-
+        const advisorObject = new AdvisorModel(
+            advisor.cpf,
+            advisor.name,
+            advisor.email,
+            advisor.password,
+            advisor.phone,
+            advisor.advisorRegistration
+        );
+        
         const newAdvisor = await this.repository.createAdvisor(advisorObject);
-
-        return {
-            advisor: newAdvisor,
-        };
+        return { advisor: newAdvisor };
     }
 }

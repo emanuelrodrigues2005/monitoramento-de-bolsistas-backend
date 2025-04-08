@@ -18,23 +18,23 @@ class AdvisorModel {
         this.advisorRegistration = advisorRegistration;
     }
 
-    public getAdvisorCpf(): string {
+    public getCpf(): string {
         return this.cpf;
     }
 
-    public getAdvisorName(): string {
+    public getName(): string {
         return this.name;
     }
 
-    public getAdvisorEmail(): string {
+    public getEmail(): string {
         return this.email;
     }
 
-    public getAdvisorPassword(): string {
+    public getPassword(): string {
         return this.password;
     }
 
-    public getAdvisorPhone(): string {
+    public getPhone(): string {
         return this.phone;
     }
 

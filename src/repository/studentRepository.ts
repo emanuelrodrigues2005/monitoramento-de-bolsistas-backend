@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import StudentModel, { StudentModelInterface } from "../models/studentModel";
 
 class StudentRepository {
-    private client: PrismaClient
+    private client: PrismaClient;
     private static instance: StudentRepository;
 
     private constructor() {
@@ -26,7 +26,7 @@ class StudentRepository {
             where: {
                 cpf,
             },
-        })
+        });
 
         return student;
     }
@@ -34,12 +34,17 @@ class StudentRepository {
     async createStudent(student: StudentModel): Promise<StudentModelInterface> {
         const newStudent = await this.client.student.create({
             data: {
-                cpf: student.getStudentCpf(),
-                name: student.getStudentName(),
-                email: student.getStudentEmail(),
-                password: student.getStudentPassword(),
-                phone: student.getStudentPhone()
-            }
+                cpf: student.getCpf(),
+                name: student.getName(),
+                email: student.getEmail(),
+                password: student.getPassword(),
+                phone: student.getPhone(),
+                studentRegistration: student.getStudentRegistration(),
+                bankName: student.getBankName(),
+                bankAccount: student.getBankAccount(),
+                bankAgency: student.getBankAgency(),
+                researchGrant: student.getResearchGrant(),
+            },
         });
 
         return newStudent;
@@ -48,14 +53,19 @@ class StudentRepository {
     async updateStudent(student: StudentModel): Promise<StudentModelInterface> {
         const updatedStudent = await this.client.student.update({
             where: {
-                cpf: student.getStudentCpf()
-            }, 
+                cpf: student.getCpf(),
+            },
             data: {
-                name: student.getStudentName(),
-                email: student.getStudentEmail(),
-                password: student.getStudentPassword(),
-                phone: student.getStudentPhone()
-            }
+                name: student.getName(),
+                email: student.getEmail(),
+                password: student.getPassword(),
+                phone: student.getPhone(),
+                studentRegistration: student.getStudentRegistration(),
+                bankName: student.getBankName(),
+                bankAccount: student.getBankAccount(),
+                bankAgency: student.getBankAgency(),
+                researchGrant: student.getResearchGrant(),
+            },
         });
 
         return updatedStudent;
@@ -64,8 +74,8 @@ class StudentRepository {
     async deleteStudent(cpf: string): Promise<StudentModelInterface> {
         const deletedStudent = await this.client.student.delete({
             where: {
-                cpf
-            }
+                cpf,
+            },
         });
 
         return deletedStudent;

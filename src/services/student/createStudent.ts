@@ -1,4 +1,4 @@
-import StudentModel, {StudentModelInterface} from "../../models/studentModel";
+import StudentModel, { StudentModelInterface } from "../../models/studentModel";
 import StudentRepository from "../../repository/studentRepository";
 import { Service, ServiceInput, ServiceOutput } from "../service";
 
@@ -25,10 +25,19 @@ export class CreateStudent implements Service {
         return CreateStudent.instance;
     }
 
-    public async execute(input: ServiceInput): Promise<ServiceOutput> {
-        const { student } = input as CreateStudentInput;
-
-        const studentObject = new StudentModel(student.cpf, student.name, student.email, student.password, student.phone, student.studentRegistration,student.bankName, student.bankAccount, student.bankAgency,student.researchGrant);
+    public async execute({ student }: CreateStudentInput): Promise<CreateStudentOutput> {
+        const studentObject = new StudentModel(
+            student.cpf,
+            student.name,
+            student.email,
+            student.password,
+            student.phone,
+            student.studentRegistration,
+            student.bankName,
+            student.bankAccount,
+            student.bankAgency,
+            student.researchGrant
+        );
 
         const newStudent = await this.repository.createStudent(studentObject);
 
@@ -36,5 +45,4 @@ export class CreateStudent implements Service {
             student: newStudent,
         };
     }
-
 }

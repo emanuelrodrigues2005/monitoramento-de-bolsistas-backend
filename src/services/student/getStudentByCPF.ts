@@ -27,28 +27,6 @@ export class GetStudentByCPF implements Service {
 
     public async execute({ studentCPF }: GetStudentByCPFInput): Promise<GetStudentByCPFOutput> {
         const studentFromDB = await this.repository.getStudentByCPF(studentCPF);
-
-        if (!studentFromDB) {
-            return {
-                student: null
-            };
-        }
-
-        const studentObject = {
-            cpf: studentFromDB.cpf,
-            name: studentFromDB.name,
-            email: studentFromDB.email,
-            password: studentFromDB.password,
-            phone: studentFromDB.phone,
-            studentRegistration: studentFromDB.studentRegistration,
-            bankName: studentFromDB.bankName,
-            bankAccount: studentFromDB.bankAccount,
-            bankAgency: studentFromDB.bankAgency,
-            researchGrant: studentFromDB.researchGrant,
-        }
-
-        return {
-            student: studentObject,
-        };
+        return { student: studentFromDB };
     }
 }
