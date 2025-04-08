@@ -27,23 +27,6 @@ export class GetUserByCPF implements Service {
 
     public async execute({ userCPF }: GetUserByCPFInput): Promise<GetUserByCPFOutput> {
         const userFromDB = await this.repository.getUserByCPF(userCPF);
-
-        if (!userFromDB) {
-            return {
-                user: null
-            };
+        return { user: userFromDB };
         }
-
-        const userObject = {
-            cpf: userFromDB.cpf,
-            name: userFromDB.name,
-            email: userFromDB.email,
-            password: userFromDB.password,
-            phone: userFromDB.phone,
-        }
-
-        return {
-            user: userObject,
-        };
-    }
 }

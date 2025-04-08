@@ -45,7 +45,7 @@ class UserRepository {
         return newUser;
     }
 
-    async updateUser(user: UserModel): Promise<UserModelInterface> {
+    async updateUser(user: UserModel): Promise<UserModelInterface | null> {
         const updateUser = await this.client.user.update({
             where: {
                 cpf: user.getCpf()
@@ -61,11 +61,17 @@ class UserRepository {
         return updateUser;
     }
     
-    async deleteUser(cpf: string): Promise<UserModelInterface> {
+    async deleteUser(cpf: string): Promise<UserModelInterface | null> {
+        const userExists = await this.client.user.findUnique({
+            where: { cpf }
+        });
+
+        if (!userExists) {
+            return null;
+        }
+
         const user = await this.client.user.delete({
-            where: {
-                cpf,
-            },
+            where: { cpf }
         });
 
         return user;

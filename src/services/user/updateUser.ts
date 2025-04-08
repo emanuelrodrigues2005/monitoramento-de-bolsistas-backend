@@ -3,8 +3,7 @@ import UserRepository from "../../repository/userRepository";
 import { Service, ServiceInput, ServiceOutput } from "../service";
 
 interface UpdateUserInput extends ServiceInput {
-    userCPF: string;
-    userData: Partial<UserModelInterface>;
+    user: UserModelInterface;
 }
 
 interface UpdateUserOutput extends ServiceOutput {
@@ -26,27 +25,15 @@ export class UpdateUser implements Service {
         return UpdateUser.instance;
     }
 
-    public async execute({ userCPF, userData }: UpdateUserInput): Promise<UpdateUserOutput> {
-        const userFromDB = await this.repository.getUserByCPF(userCPF);
-
-        if (!userFromDB) {
-            return {
-                user: null,
-            };
-        }
-
-        const userToUpdate = new UserModel(
-            userFromDB.cpf,
-            userData.name || userFromDB.name,
-            userData.email || userFromDB.email,
-            userData.password || userFromDB.password,
-            userData.phone || userFromDB.phone
-        );
-    
-        const updatedUser = await this.repository.updateUser(userToUpdate);
-
-        return {
-            user: updatedUser,
-        };
+    public async execute({ user }: UpdateUserInput): Promise<UpdateUserOutput> {
+        const newUser = new UserModel(
+            user.cpf,
+            user.name,
+            user.email,
+            user.password,
+            user.phone
+        )
+        const updatedUser = await this.repository.updateUser(newUser);
+        return { user: updatedUser };
     }
 }

@@ -24,17 +24,17 @@ userRoute.routes.post("/", async (req, res) => {
 
 userRoute.routes.put("/:cpf", async (req, res) => {
     try {
-        const userCPF = req.params.cpf;
-        const userData = req.body;
+        const userCpf = req.params.cpf;
+        const { name, email, password, phone } = req.body;
+        const userService = UpdateUser.getInstance();
+        const user = await userService.execute({ user: { cpf: userCpf, name, email, password, phone } });
 
-        const updateUser = UpdateUser.getInstance();
-        const result = await updateUser.execute({ userCPF, userData });
-
-        if (!result.user) {
+        if (!user) {
             res.status(404).send("Usuário não encontrado.");
+            return;
         }
 
-        res.status(200).send(result.user);
+        res.status(200).send(user);
     } catch (error: any) {
         res.status(400).send("Erro ao atualizar usuário: " + error.message);
     }
@@ -75,7 +75,7 @@ userRoute.routes.delete("/:cpf", async (req, res) => {
         const deleteUser = DeleteUser.getInstance();
         const result = await deleteUser.execute({ userCPF });
 
-        res.status(200).send(deleteUser);
+        res.status(200).send(result);
     } catch (error: any) {
         res.status(400).send("Erro ao deletar usuário: " + error.message);
     }

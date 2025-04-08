@@ -25,16 +25,6 @@ export class GetAllUser implements Service {
 
     public async execute(): Promise<GetAllUserOutput> {
         const users = await this.repository.getAllUsers();
-        const userObjects = users.map((user) => ({
-            cpf: user.cpf,
-            name: user.name,
-            email: user.email,
-            password: user.password,
-            phone: user.phone,
-        }));
-
-        return {
-            users: userObjects,
-        };
+        return { users };
     }
 }

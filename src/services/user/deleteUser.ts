@@ -8,7 +8,7 @@ interface DeleteUserInput extends ServiceInput {
 }
 
 interface DeleteUserOutput extends ServiceOutput {
-    user: UserModelInterface;
+    message: string;
 }
 
 export class DeleteUser implements Service {
@@ -30,12 +30,7 @@ export class DeleteUser implements Service {
 
 
     async execute({ userCPF }: DeleteUserInput): Promise<DeleteUserOutput> {
-        const userObject = await this.repository.getUserByCPF(userCPF);
-
-        const deletedUser = await this.repository.deleteUser(userCPF);
-
-        return {
-            user: deletedUser,
-        };
+        const user = await this.repository.deleteUser(userCPF);
+        return { message: "Usuário deletado com sucesso" };
     }
 }
