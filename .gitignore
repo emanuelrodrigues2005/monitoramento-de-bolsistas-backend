@@ -1,12 +1,4 @@
 node_modules
-createProject.ts
-deleteProject.ts
-updateProject.ts
-getAllProject.ts
-getProjectByID.ts
-projectModel.ts
-projectRepository.ts
-projectController.ts
 
 # Keep environment variables out of version control
 .env
