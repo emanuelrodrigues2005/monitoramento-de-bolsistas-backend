@@ -27,6 +27,7 @@ model Student {
   bankAgency          String
   researchGrant       String
   projects            ProjectStudent[]
+  checkins            Checkin[]  @relation("StudentCheckins")
 }
 
 model Advisor {
@@ -50,6 +51,7 @@ model Project {
   advisorCpf              String
   advisor                 Advisor          @relation("AdvisorProjects", fields: [advisorCpf], references: [cpf])
   scholarshipStudent      ProjectStudent[]
+  checkins                Checkin[]         @relation("ProjectCheckins")    
 }
 
 model ProjectStudent {
@@ -60,6 +62,19 @@ model ProjectStudent {
   scholarshipStudent   Student @relation(fields: [scholarshipStudentCpf], references: [cpf])
 
   @@id([projectId, scholarshipStudentCpf])
+}
+
+model Checkin {
+  id                 String   @id @unique
+  dateCheckin        DateTime
+  studentCpf         String
+  projectId          String
+  howLong            Float
+  description        String
+
+  project     Project   @relation("ProjectCheckins", fields: [projectId], references: [id])
+  student     Student   @relation("StudentCheckins", fields: [studentCpf], references: [cpf])
+
 }
 
 enum ProjectStatus {
