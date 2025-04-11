@@ -28,6 +28,7 @@ model Student {
   researchGrant       String
   projects            ProjectStudent[]
   payments            Payment[]    @relation("StudentPayments")
+  checkins            Checkin[]  @relation("StudentCheckins")
 }
 
 model Advisor {
@@ -38,6 +39,7 @@ model Advisor {
   password             String
   advisorRegistration  String      @unique
   projects             Project[]   @relation("AdvisorProjects")
+  feedbacks            Feedback[]        @relation("AdvisorFeedbacks")
 }
 
 model Project {
@@ -49,19 +51,21 @@ model Project {
   status                  ProjectStatus
   scholarshipValue        Float
   advisorCpf              String
-  advisor                 Advisor          @relation("AdvisorProjects", fields: [advisorCpf], references: [cpf])
+  advisor                 Advisor          @relation("AdvisorProjects", fields: [advisorCpf], references: [cpf], onDelete: Cascade)
   scholarshipStudent      ProjectStudent[]
+  checkins                Checkin[]         @relation("ProjectCheckins")    
 }
 
 model ProjectStudent {
-  projectId String
-  scholarshipStudentCpf String
+  projectId               String
+  scholarshipStudentCpf   String
 
-  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  scholarshipStudent   Student @relation(fields: [scholarshipStudentCpf], references: [cpf])
+  project                 Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  scholarshipStudent      Student          @relation(fields: [scholarshipStudentCpf], references: [cpf], onDelete: Cascade)
 
   @@id([projectId, scholarshipStudentCpf])
 }
+
 
 enum ProjectStatus {
   IN_PROGRESS
@@ -90,4 +94,28 @@ enum PaymentStatus {
     PROCESSED
     FAILED
     COMPLETED
+}
+
+model Checkin {
+  id                 String      @id @unique
+  dateCheckin        DateTime
+  studentCpf         String
+  projectId          String
+  howLong            Float
+  description        String
+  feedback           Feedback?   @relation("CheckinFeedback")
+
+  project            Project     @relation("ProjectCheckins", fields: [projectId], references: [id], onDelete: Cascade)
+  student            Student     @relation("StudentCheckins", fields: [studentCpf], references: [cpf], onDelete: Cascade)
+}
+
+model Feedback {
+  id             String     @id @unique
+  checkinId      String     @unique
+  advisorCpf     String     @unique
+  comment        String
+  feedbackDate   DateTime
+
+  checkin       Checkin    @relation("CheckinFeedback", fields: [checkinId], references: [id], onDelete: Cascade)
+  advisor       Advisor    @relation("AdvisorFeedbacks", fields: [advisorCpf], references: [cpf], onDelete: Cascade)
 }
