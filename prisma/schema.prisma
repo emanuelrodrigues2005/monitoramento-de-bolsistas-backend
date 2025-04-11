@@ -27,6 +27,7 @@ model Student {
   bankAgency          String
   researchGrant       String
   projects            ProjectStudent[]
+  payments            Payment[]    @relation("StudentPayments")
 }
 
 model Advisor {
@@ -70,4 +71,23 @@ enum ProjectStatus {
   PENDING
   APPROVED
   REJECTED
+}
+
+model Payment{
+
+  paymentId           String          @id @unique
+  studentCPF          String
+  student             Student         @relation("StudentPayments", fields: [studentCPF], references: [cpf])
+  amount              Float
+  dueDate             DateTime 
+  processingDate      DateTime
+  paymentStatus       PaymentStatus      
+  receipt             String 
+}
+ 
+enum PaymentStatus {
+    PENDING
+    PROCESSED
+    FAILED
+    COMPLETED
 }
