@@ -1,12 +1,13 @@
+
 class UserModel {
-    private cpf: string;
-    private name: string;
-    private email: string;
-    private password: string;
-    private phone: string;
+    private cpf: string; 
+    private name: string; 
+    private email: string; 
+    private password: string; 
+    private phone: string; 
 
     constructor(cpf: string, name: string, email: string, password: string, phone: string) {
-        if(!cpf || cpf.trim() === "") {
+        if (!cpf || cpf.trim() === "") {
             throw new Error(UserErros.INVALID_CPF);
         }
         this.cpf = cpf;

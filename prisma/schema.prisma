@@ -1,8 +1,4 @@
-// Esse é o arquivo de configuração do Prisma, onde você define 
-// os modelos de dados da sua aplicação.
-// Ao rodar uma migration, seu banco de dados será modelado a partir desses modelos.
-// Por fim, você poderá acessar esses modelos através do Prisma Client.
-generator client {
+  generator client {
   provider = "prisma-client-js"
 }
 
@@ -12,9 +8,86 @@ datasource db {
 }
 
 model User {
-  cpf       String @id @unique
+  cpf       String   @id @unique
   name      String
-  email     String @unique
-  phone     String @unique
+  email     String   @unique
+  phone     String   @unique
   password  String 
+}
+
+model Student {
+  cpf                 String   @id @unique
+  name                String
+  email               String   @unique
+  phone               String   @unique
+  password            String
+  studentRegistration String   @unique
+  bankName            String
+  bankAccount         String   @unique
+  bankAgency          String
+  researchGrant       String
+  projects            ProjectStudent[]
+  payments            Payment[]    @relation("StudentPayments")
+}
+
+model Advisor {
+  cpf                  String      @id @unique
+  name                 String
+  email                String      @unique
+  phone                String      @unique
+  password             String
+  advisorRegistration  String      @unique
+  projects             Project[]   @relation("AdvisorProjects")
+}
+
+model Project {
+  id                      String           @id @unique
+  name                    String   
+  description             String
+  startDate               DateTime
+  endDate                 DateTime
+  status                  ProjectStatus
+  scholarshipValue        Float
+  advisorCpf              String
+  advisor                 Advisor          @relation("AdvisorProjects", fields: [advisorCpf], references: [cpf])
+  scholarshipStudent      ProjectStudent[]
+}
+
+model ProjectStudent {
+  projectId String
+  scholarshipStudentCpf String
+
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  scholarshipStudent   Student @relation(fields: [scholarshipStudentCpf], references: [cpf])
+
+  @@id([projectId, scholarshipStudentCpf])
+}
+
+enum ProjectStatus {
+  IN_PROGRESS
+  COMPLETED
+  CANCELED
+  SUSPENDED
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Payment{
+
+  paymentId           String          @id @unique
+  studentCPF          String
+  student             Student         @relation("StudentPayments", fields: [studentCPF], references: [cpf])
+  amount              Float
+  dueDate             DateTime 
+  processingDate      DateTime
+  paymentStatus       PaymentStatus      
+  receipt             String 
+}
+ 
+enum PaymentStatus {
+    PENDING
+    PROCESSED
+    FAILED
+    COMPLETED
 }

@@ -3,17 +3,17 @@ import UserModel, { UserModelInterface } from "../models/userModel";
 
 class UserRepository {
     private client: PrismaClient
-    private static instace: UserRepository;
+    private static instance: UserRepository;
 
     private constructor() {
         this.client = new PrismaClient();
     }
 
     public static getInstance(): UserRepository {
-        if (!UserRepository.instace) {
-            UserRepository.instace = new UserRepository();
+        if (!UserRepository.instance) {
+            UserRepository.instance = new UserRepository();
         }
-        return UserRepository.instace;
+        return UserRepository.instance;
     }
 
     async getAllUsers(): Promise<UserModelInterface[]> {
@@ -45,7 +45,7 @@ class UserRepository {
         return newUser;
     }
 
-    async updateUser(user: UserModel): Promise<UserModelInterface> {
+    async updateUser(user: UserModel): Promise<UserModelInterface | null> {
         const updateUser = await this.client.user.update({
             where: {
                 cpf: user.getCpf()
@@ -61,11 +61,17 @@ class UserRepository {
         return updateUser;
     }
     
-    async deleteUser(cpf: string): Promise<UserModelInterface> {
+    async deleteUser(cpf: string): Promise<UserModelInterface | null> {
+        const userExists = await this.client.user.findUnique({
+            where: { cpf }
+        });
+
+        if (!userExists) {
+            return null;
+        }
+
         const user = await this.client.user.delete({
-            where: {
-                cpf,
-            },
+            where: { cpf }
         });
 
         return user;
